@@ -228,4 +228,59 @@ window.onload = function () {
       ul.style.left = -start + 'px'
     }
   }
+
+  // 商品详情数据的动态渲染
+  rightTopData()
+  function rightTopData () {
+    /**
+     * 思路：
+     *  1、查找 rightTop 元素
+     *  2、查找 data.js 中的数据
+     *  3、重新建立一个字符串，将原来的布局结构贴进来，将所对应的数据放在对应的位置上，重新渲染 rightTop 元素
+     * 
+    */
+    //1. 查找元素  
+    const rightTop = document.querySelector('.right .rightTop')
+
+    //2. 查找数据
+    const goodsDetail = goodData.goodsDetail
+
+    //3. 创建字符串变量
+    let s = `<h3>${goodsDetail.title}</h3>
+    <p>${goodsDetail.recommend}</p>
+    <div class="priceWrap">
+      <div class="priceTop">
+        <span>价&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格</span>
+        <div class="price">
+          <span>￥</span>
+          <p>${goodsDetail.price}</p>
+          <i>降价通知</i>
+        </div>
+        <p>
+          <span>累计评价</span>
+          <span>${goodsDetail.evaluateNum}</span>
+        </p>
+      </div>
+      <div class="priceBottom">
+        <span>促&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;销</span>
+        <p>
+          <span>${goodsDetail.promoteSales.type}</span>
+          <span>${goodsDetail.promoteSales.content}</span>
+        </p>
+      </div>
+    </div>
+    <div class="support">
+      <span>支&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;持</span>
+      <p>${goodsDetail.support}</p>
+    </div>
+    <div class="address">
+      <span>配&nbsp;送&nbsp;至</span>
+      <p>${goodsDetail.address}</p>
+    </div>
+    `
+
+    // 4. 重新渲染 rightTop 元素
+    rightTop.innerHTML = s
+
+  }
 } 
