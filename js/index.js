@@ -1,5 +1,7 @@
 // 需要将所有的 DOM 元素对象以及相关资源都加载完毕之后，再来实现的事件
 window.onload = function () {
+  // 声明一个记录点击的缩略图下标
+  let bigImgIndex = 0
 
   navPathDataBind()
   // 路径导航得数据渲染
@@ -65,7 +67,7 @@ window.onload = function () {
 
       // 5. 创建大图片元素
       const bigImage = document.createElement('img')
-      bigImage.src = "images/b1.png"
+      bigImage.src = goodData.imagessrc[bigImgIndex].b
 
       // 6. 大图框追加大图片
       bigPic.appendChild(bigImage)
@@ -119,4 +121,63 @@ window.onload = function () {
     }
   }
   bigClassBind()
+
+  // 动态渲染放大镜缩略图的数据
+  thumbnailData()
+  function thumbnailData () {
+    /**
+     * 思路：
+     *  1、先获取 piclist 元素下面的 ul
+     *  2、在获取 data.js 文件下的 goodData -> imagessrc
+     *  3、遍历数组，根据数组的长度来创建 li 元素
+     *  4、ul 遍历追加 li 元素
+     * */
+
+    // 1. 获取 piclist 下面的 ul
+    const ul = document.querySelector('#piclist ul')
+
+    // 2. 获取 imagessrc 数据
+    const imagessrc = goodData.imagessrc
+
+    // 3. 遍历数组
+    for (let i = 0; i < imagessrc.length; i++) {
+      // 4. 创建 li 元素
+      const newLi = document.createElement('li')
+
+      // 5. 创建 img 元素
+      const newImage = document.createElement('img')
+      newImage.src = imagessrc[i].s
+
+      // 6. 让 li 追加 img 元素
+      newLi.appendChild(newImage)
+
+      // 7. 让 ul 追加 li 元素
+      ul.appendChild(newLi)
+    }
+  }
+
+  // 点击缩略图的效果
+  thumbnailClick()
+  function thumbnailClick () {
+    /**
+     * 1. 获取所有的 li 元素并且循环发生点击事件
+     * 2. 点击缩略图需要确定其下标位置来找到对应小图路径和大图路径替换现有 src 的值
+     * */
+
+    // 1. 获取所有的 li 元素
+    let liNodes = document.querySelectorAll('#piclist ul li')
+
+    let smallPic_img = document.querySelector('#smallPic img')
+
+    // 小图的路径需要默认和 imagessrc 的第一个元素的小兔路径相同
+    smallPic_img.src = goodData.imagessrc[0].s
+
+    for (let i = 0; i < liNodes.length; i++) {
+      liNodes[i].onclick = function () {
+        bigImgIndex = i
+
+        smallPic_img.src = goodData.imagessrc[i].s
+      }
+    }
+  }
 } 
