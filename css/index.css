@@ -126,3 +126,43 @@
   font-size: 12px;
   padding: 0 5px;
 }
+#wrapper #content #center {
+  margin: 5px 0 15px;
+}
+#wrapper #content #center #left {
+  width: 400px;
+  float: left;
+}
+#wrapper #content #center #left #leftTop {
+  width: 400px;
+  position: relative;
+}
+#wrapper #content #center #left #leftTop #smallPic {
+  width: 400px;
+  height: 400px;
+  border: 1px solid #dfdfdf;
+  position: relative;
+}
+#wrapper #content #center #left #leftTop #smallPic .mask {
+  width: 200px;
+  height: 200px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid #ddd;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+}
+#wrapper #content #center #left #leftTop #bigPic {
+  width: 400px;
+  height: 400px;
+  border: 1px solid #ddd;
+  left: 420px;
+  top: 0px;
+  position: absolute;
+  overflow: hidden;
+}
+#wrapper #content #center #left #leftTop #bigPic img {
+  width: 800px;
+  height: 800px;
+  position: absolute;
+}
