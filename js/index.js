@@ -180,4 +180,52 @@ window.onload = function () {
       }
     }
   }
+
+  // 点击缩略图左右箭头想过
+  thumbnailLeftRightClick()
+  function thumbnailLeftRightClick () {
+    /**
+     * 思路：
+     * 1、先获取左右两端的箭头
+     * 2、再获取可视的 div 以及 ul 元素和所有的 li 元素
+     * 3、计算（发生起点，步长，总体运动的距离值）
+     * 4、然后再发生点击事件
+    */
+
+    // 1. 获取箭头元素
+    let prev = document.querySelector('#leftBottom a.prev')
+    let next = document.querySelector('#leftBottom a.next')
+
+    // 2. 获取可视的 div 以及 ul 元素和所有的 li 元素
+    let piclist = document.querySelector('#piclist')
+
+    let ul = document.querySelector('#piclist ul')
+
+    let liNodes = document.querySelectorAll('#piclist ul li')
+
+    // 3. 计算
+    // 步长
+    let start = 0
+    // 起点
+    let step = (liNodes[0].offsetWidth + 20) * 2
+    // 总体运动的距离值 ul 的宽度 - div 宽的宽度 = (图片的总数 - div中显示的数量) * (li + 20)
+    let endPosition = (liNodes.length - 5) * (liNodes[0].offsetWidth + 20)
+
+    // 4. 发生事件
+    next.onclick = function () {
+      start += step
+      if (start > endPosition) {
+        start = endPosition
+      }
+      ul.style.left = -start + 'px'
+    }
+
+    prev.onclick = function () {
+      start -= step
+      if (start < 0) {
+        start = 0
+      }
+      ul.style.left = -start + 'px'
+    }
+  }
 } 
