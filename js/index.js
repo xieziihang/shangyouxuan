@@ -283,4 +283,200 @@ window.onload = function () {
     rightTop.innerHTML = s
 
   }
+
+  // 商品参数数据的动态渲染
+  rightBottomData()
+  function rightBottomData () {
+    let chooseWrap = document.querySelector('.chooseWrap')
+    let crumbData = goodData.goodsDetail.crumbData
+    for (let i = 0; i < crumbData.length; i++) {
+      const dlNode = document.createElement('dl')
+      const dtNode = document.createElement('dt')
+      dtNode.innerText = crumbData[i].title
+      dlNode.appendChild(dtNode)
+      for (let j = 0; j < crumbData[i].data.length; j++) {
+        const ddNode = document.createElement('dd')
+        ddNode.innerText = crumbData[i].data[j].type
+        ddNode.setAttribute('price', crumbData[i].data[j].changePrice)
+        dlNode.appendChild(ddNode)
+      }
+
+      chooseWrap.appendChild(dlNode)
+    }
+  }
+
+  // 点击商品参数之后的颜色排他效果
+  clickddBind()
+  function clickddBind () {
+    /**
+     * 获取所有的 dl 元素，获取其中起一个 dl 元素下面的所有 dd
+     * 循环所有的 dd 元素，并且添加点击事件
+     * 确定实际发生事件的目标源对象设置其文字颜色为红色，然后给其他所有元素的颜色都重置为基础颜色
+    */
+    const dlNodes = document.querySelectorAll('.chooseWrap dl')
+    const arr = new Array(dlNodes.length)
+    arr.fill(0)
+
+    for (let k = 0; k < dlNodes.length; k++) {
+      const ddNodes = dlNodes[k].querySelectorAll('dd')
+
+      for (let i = 0; i < ddNodes.length; i++) {
+        ddNodes[i].onclick = function () {
+          for (let j = 0; j < ddNodes.length; j++) {
+            ddNodes[j].style.color = '#666'
+          }
+          this.style.color = 'red'
+          arr[k] = this
+
+          changePriceBind(arr)
+
+          let markDiv, aNode
+          // 点击哪一个 dd 元素动态产生一个新的 mark标记元素
+          const choose = document.querySelector('.choose')
+          choose.innerHTML = ''
+          arr.forEach((value, index) => {
+            // 只要是为真的条件，咱们就来动态的来创建 mark 标签
+            if (value) {
+              markDiv = document.createElement('div')
+              markDiv.className = 'mark'
+              markDiv.innerText = value.innerText
+              aNode = document.createElement('a')
+              aNode.innerText = 'X'
+              aNode.setAttribute('index', index)
+              markDiv.appendChild(aNode)
+              choose.appendChild(markDiv)
+            }
+          })
+          let aNodes = document.querySelectorAll('.mark a')
+          for (let j = 0; j < aNodes.length; j++) {
+            aNodes[j].onclick = function () {
+              let idx = this.getAttribute('index')
+              arr[idx] = 0
+              changePriceBind(arr)
+              let ddlist = dlNodes[idx].querySelectorAll('dd')
+              for (let k = 0; k < ddlist.length; k++) {
+                ddlist[k].style.color = '#666'
+              }
+              ddlist[0].style.color = 'red'
+
+              choose.removeChild(this.parentElement)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // 价格变动函数
+  /**
+   * 这个函数需要在点击dd和删除 mark 标记时候调用
+   */
+  function changePriceBind (arr) {
+    /**
+     * 思路：
+     *  1、获取价格的标签元素
+     *  2、给每一个 dd 标签身上都设置一个自定义属性，用来记录变化的价格
+     * */
+
+    // 1. 原价格标签元素
+    let oldPrice = document.querySelector('#wrapper #content #center .right .rightTop .priceWrap .priceTop .price p')
+    // 默认价格
+    let price = goodData.goodsDetail.price
+    for (let i = 0; i < arr.length; i++) {
+      if (arr[i]) {
+        let changePrice = Number(arr[i].getAttribute('price'))
+        price = price + changePrice
+      }
+    }
+
+    let ipts = document.querySelectorAll('.chooseBox .listWrap .middle li input')
+    let priceNode = document.querySelector('#wrapper #content .goodsDetailWrap .rightDetail .chooseBox .listWrap .left p')
+    let fianlPriceNode = document.querySelector('#wrapper #content .goodsDetailWrap .rightDetail .chooseBox .listWrap .right i')
+    for (let i = 0; i < ipts.length; i++) {
+      if (ipts[i].checked) {
+        price += ipts[j].value * 1
+      }
+    }
+    oldPrice.innerText = price
+    priceNode.innerText = '￥' + price
+    fianlPriceNode.innerText = '￥' + price
+  }
+
+  // 选择搭配中间区域复选框选中套餐价格变动效果
+  choosePrice()
+  function choosePrice () {
+    /**
+     * 思路：
+     * 1、获取中间区域所有的复选框元素
+     * 2、遍历这些元素取出他们的价格，和左侧的基础价格进行累加，累加后重新写回套餐价
+     * */
+    let ipts = document.querySelectorAll('.chooseBox .listWrap .middle li input')
+    let priceNode = document.querySelector('#wrapper #content .goodsDetailWrap .rightDetail .chooseBox .listWrap .left p')
+    let fianlPriceNode = document.querySelector('#wrapper #content .goodsDetailWrap .rightDetail .chooseBox .listWrap .right i')
+    for (let i = 0; i < ipts.length; i++) {
+      ipts[i].onclick = function () {
+        let oldPrice = priceNode.innerHTML.slice(1)
+        let newPrice = oldPrice
+        for (let j = 0; j < ipts.length; j++) {
+          if (ipts[j].checked) {
+            newPrice = newPrice * 1 + ipts[j].value * 1
+          }
+        }
+        fianlPriceNode.innerText = '￥' + newPrice
+      }
+    }
+  }
+
+  // 封装一个公共的选项卡函数
+  // 被点击的元素:tabBtns   被切换的元素:tabConts
+  function Tab (tabBtns, tabConts) {
+    for (let i = 0; i < tabBtns.length; i++) {
+      tabBtns[i].index = i
+      tabBtns[i].onclick = function () {
+        for (let j = 0; j < tabBtns.length; j++) {
+          tabBtns[j].className = ''
+          tabConts[j].className = ''
+        }
+        this.className = 'active'
+        tabConts[this.index].className = 'active'
+      }
+    }
+  }
+
+  // 点击左侧选项卡
+  leftTab()
+  function leftTab () {
+    let h4Nodes = document.querySelectorAll('#wrapper #content .goodsDetailWrap .leftAside .asideTop h4')
+    let divs = document.querySelectorAll('#wrapper #content .goodsDetailWrap .leftAside .asideContent >div')
+    Tab(h4Nodes, divs)
+  }
+
+  rightTab()
+  function rightTab () {
+    let lists = document.querySelectorAll('#wrapper #content .goodsDetailWrap .rightDetail .buttonDetail .tabBtns li')
+    let divs = document.querySelectorAll('#wrapper #content .goodsDetailWrap .rightDetail .buttonDetail .tabContents div')
+    Tab(lists, divs)
+  }
+
+  // 右边侧边栏的点击效果
+  rightAsideBind()
+  function rightAsideBind () {
+    const btns = document.querySelector('#wrapper .rightAside .btns')
+    const rightAside = document.querySelector('#wrapper .rightAside')
+    // 记录初始状态
+    let flag = true
+
+    btns.onclick = function () {
+      if (flag) {
+        // 展开
+        btns.className = 'btns btnsOpen'
+        rightAside.className = 'rightAside asideOpen'
+      } else {
+        // 关闭
+        btns.className = 'btns btnsClose'
+        rightAside.className = 'rightAside asideClose'
+      }
+      flag = !flag
+    }
+  }
 } 
