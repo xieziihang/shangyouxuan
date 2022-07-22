@@ -10,3 +10,4 @@
 
 ## CSS 学习笔记
 [1.position定位](https://github.com/xieziihang/shangyouxuan/issues/1)
+[2. 背景相关](https://github.com/xieziihang/shangyouxuan/issues/2)
