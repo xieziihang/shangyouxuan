@@ -9,4 +9,4 @@
 - 网站后侧固定侧边栏样式效果
 
 ## CSS 学习笔记
-[1.定位](https://github.com/xieziihang/shangyouxuan/issues/1)
+[1.position定位](https://github.com/xieziihang/shangyouxuan/issues/1)
