@@ -8,3 +8,5 @@
 - 商品搭配复选框选中套餐价的变动效果
 - 网站后侧固定侧边栏样式效果
 
+## CSS 学习笔记
+[1.定位](https://github.com/xieziihang/shangyouxuan/issues/1)
