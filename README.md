@@ -16,4 +16,4 @@
 
 ## 基建
 ### Promise
-[1. Promise基础与使用]()
+[1. Promise基础与使用](https://github.com/xieziihang/shangyouxuan/issues/3)
