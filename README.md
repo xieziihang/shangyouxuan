@@ -13,3 +13,7 @@
 [2. 背景相关](https://github.com/xieziihang/shangyouxuan/issues/2)
 
 ## typescript
+
+## 基建
+### Promise
+[1. Promise基础与使用]()
